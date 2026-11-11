@@ -36,12 +36,14 @@ src/
 │   ├── http.ts     # fetch + JWT + renovación automática + ErrorApi
 │   ├── credenciales.ts
 │   ├── cuenta.ts
-│   └── integra.ts
+│   ├── integra.ts
+│   └── reserva.ts  # + reservaSimulada.ts: mismo contrato con datos locales
 ├── assets/         # CSS global y recursos estáticos
 ├── components/     # Componentes reutilizables
 ├── router/         # Rutas y guards (requiereSesion, roles, soloInvitados)
-├── stores/         # Pinia (sesion.ts: usuario autenticado)
+├── stores/         # Pinia (sesion.ts: usuario autenticado, compra.ts: compra en curso)
 ├── types/          # Tipos espejo de los DTO del backend
+├── utils/          # Formato (CLP, fechas) y reglas de dominio sin estado
 └── views/<modulo>/ # Pantallas agrupadas por módulo
 ```
 
@@ -81,7 +83,19 @@ try {
 
 Los guards solo mejoran la navegación; la autorización real la hace el backend.
 
-## 6. Convenciones
+## 6. Flujo de compra (módulo Reserva)
+
+Vive en `/compra` y sigue las pantallas del Figma: inicio de compra (invitado o con sesión), pasajeros, asientos, equipaje, resumen (con el aviso de cambio de precio) y reserva confirmada. El estado está en `stores/compra.ts`; la reserva y el `X-Compra-Token` del invitado se guardan en `sessionStorage` para sobrevivir a una recarga.
+
+Búsqueda inicia la compra navegando con la alternativa elegida:
+
+```
+/compra?alternativaId=ALT-1&tramos=204&cabina=ECONOMY&pack=LIGHT&adultos=2&ninos=1&bebes=0
+```
+
+Con `VITE_RESERVA_SIMULADA=true` el flujo corre contra `api/reservaSimulada.ts` (datos de ejemplo del Figma, sin backend); con `false` usa la API real. Sin definir, se simula en `npm run dev` y el build usa la API real. En modo simulado, `/compra` sin parámetros abre una compra de ejemplo, el primer intento de pago muestra el cambio de precio y el código promocional válido es `VERANO26`.
+
+## 7. Convenciones
 
 - **Ramas:** `feature/<nombre>` desde `develop`, con Pull Request hacia `develop`. `main` queda para entregas.
 - **Commits convencionales** (`commitlint.config.js`, validados en CI): `<tipo>(<scope>): <descripción>`.
