@@ -1,16 +1,22 @@
 :root {
-  --color-primario: #0b4f8a;
-  --color-primario-oscuro: #083a66;
-  --color-texto: #1d2733;
-  --color-texto-suave: #5b6675;
-  --color-fondo: #f5f7fa;
+  --color-primario: #0038a8;
+  --color-primario-oscuro: #002a80;
+  --color-primario-suave: #e1eafb;
+  --color-texto: #16191f;
+  --color-texto-suave: #6b7280;
+  --color-fondo: #d9d9d9;
   --color-superficie: #ffffff;
   --color-borde: #d8dee6;
-  --color-error: #b42318;
+  --color-error: #c62828;
+  --color-error-suave: #fde3e3;
   --color-exito: #1a7f37;
+  --color-exito-suave: #baf5b0;
+  --color-aviso-suave: #ffe08a;
   --radio: 8px;
+  --radio-tarjeta: 16px;
 
   font-family:
+    Inter,
     system-ui,
     -apple-system,
     'Segoe UI',
@@ -31,6 +37,17 @@ body {
   margin: 0;
 }
 
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#app > main {
+  flex: 1;
+  width: 100%;
+}
+
 a {
   color: var(--color-primario);
 }
@@ -42,6 +59,18 @@ textarea {
   font: inherit;
 }
 
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primario);
+  outline-offset: 2px;
+}
+
 .contenedor {
   max-width: 1100px;
   margin: 0 auto;
@@ -49,30 +78,195 @@ textarea {
 }
 
 .boton {
-  padding: 0.55rem 1.1rem;
-  border: none;
-  border-radius: var(--radio);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.5rem;
+  border: 1.5px solid var(--color-primario);
+  border-radius: 999px;
   background: var(--color-primario);
   color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
   cursor: pointer;
 }
 
 .boton:hover:not(:disabled) {
   background: var(--color-primario-oscuro);
+  border-color: var(--color-primario-oscuro);
 }
 
 .boton:disabled {
-  opacity: 0.6;
+  opacity: 0.55;
   cursor: not-allowed;
+}
+
+.boton-secundario {
+  background: var(--color-superficie);
+  color: var(--color-primario);
+}
+
+.boton-secundario:hover:not(:disabled) {
+  background: var(--color-primario-suave);
+  border-color: var(--color-primario);
+}
+
+/* Botón con aspecto de enlace ("Cambiar", "Editar"). */
+.enlace {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--color-primario);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .tarjeta {
   background: var(--color-superficie);
-  border: 1px solid var(--color-borde);
-  border-radius: var(--radio);
-  padding: 1.5rem;
+  border-radius: var(--radio-tarjeta);
+  padding: 1.25rem 1.5rem;
+}
+
+.tarjeta > h1:not(:last-child) {
+  margin-bottom: 0.75rem;
 }
 
 .error {
   color: var(--color-error);
+}
+
+.suave {
+  color: var(--color-texto-suave);
+}
+
+.chip {
+  display: inline-block;
+  padding: 0.15rem 0.7rem;
+  border-radius: 999px;
+  background: var(--color-exito-suave);
+  color: #14431f;
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.chip-aviso {
+  background: var(--color-aviso-suave);
+  color: #5c4300;
+}
+
+.aviso {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.7rem 1rem;
+  border-radius: 12px;
+  background: var(--color-primario-suave);
+  color: var(--color-primario);
+  font-size: 0.82rem;
+}
+
+.aviso-exito {
+  background: var(--color-exito-suave);
+  color: #14431f;
+}
+
+.aviso-alerta {
+  background: var(--color-aviso-suave);
+  color: #3d2c00;
+}
+
+.aviso-error {
+  background: var(--color-error-suave);
+  color: var(--color-error);
+}
+
+/* Campo de formulario con línea inferior, como en el Figma. */
+.campo {
+  display: grid;
+  gap: 0.2rem;
+  font-size: 0.75rem;
+  color: var(--color-texto-suave);
+}
+
+.campo input,
+.campo select {
+  width: 100%;
+  padding: 0.35rem 0;
+  border: none;
+  border-bottom: 1.5px solid var(--color-texto);
+  border-radius: 0;
+  background: transparent;
+  color: var(--color-texto);
+  font-size: 0.9rem;
+}
+
+.campo input:focus,
+.campo select:focus {
+  outline: none;
+  border-bottom-color: var(--color-primario);
+}
+
+.campo-error {
+  color: var(--color-error);
+}
+
+.campo-error input,
+.campo-error select {
+  border-bottom-color: var(--color-error);
+}
+
+.campo small {
+  font-size: 0.72rem;
+}
+
+/* Pasos de la compra: contenido a la izquierda y resumen del viaje a la derecha. */
+.compra-columnas {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.compra-principal {
+  display: grid;
+  gap: 1rem;
+}
+
+.compra-titulo h1 {
+  font-size: 1.45rem;
+  line-height: 1.2;
+}
+
+.compra-titulo p {
+  margin-top: 0.2rem;
+  color: var(--color-texto-suave);
+  font-size: 0.8rem;
+}
+
+.compra-acciones {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.25rem;
+}
+
+@media (max-width: 860px) {
+  .compra-columnas {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.solo-lectores {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }

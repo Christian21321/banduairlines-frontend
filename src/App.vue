@@ -2,6 +2,7 @@
 import { RouterView } from 'vue-router'
 
 import EncabezadoSitio from '@/components/EncabezadoSitio.vue'
+import PieSitio from '@/components/PieSitio.vue'
 </script>
 
 <template>
@@ -9,4 +10,5 @@ import EncabezadoSitio from '@/components/EncabezadoSitio.vue'
   <main class="contenedor">
     <RouterView />
   </main>
+  <PieSitio />
 </template>
