@@ -26,6 +26,8 @@ export interface OpcionesPeticion {
   query?: Consulta
   /** Enviar el JWT de acceso. Por defecto `true`. */
   autenticada?: boolean
+  /** Cabeceras extra, p. ej. `X-Compra-Token` en una compra de invitado. */
+  headers?: Record<string, string>
   signal?: AbortSignal
 }
 
@@ -59,7 +61,7 @@ async function leerCuerpo(respuesta: Response): Promise<unknown> {
 
 async function ejecutar(ruta: string, opciones: OpcionesPeticion): Promise<Response> {
   const { method = 'GET', body, query, autenticada = true, signal } = opciones
-  const headers = new Headers({ Accept: 'application/json' })
+  const headers = new Headers({ Accept: 'application/json', ...opciones.headers })
   if (body !== undefined) headers.set('Content-Type', 'application/json')
 
   const credenciales = autenticada ? leerCredenciales() : null
